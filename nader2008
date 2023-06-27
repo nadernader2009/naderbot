@@ -1,0 +1,34 @@
+import telebot,time
+from gdolib import *
+from telebot import types
+channel = types.InlineKeyboardButton(text='قناتي', url = 't.me/nader20090')
+'''مصدر قناتي https://t.me/nader20090
+'''
+token = "6050573637:AAESYyEf-mREYHalglmvQxilg9tV3pbTU2U"
+bot = telebot.TeleBot(token)
+
+alokt = 0
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bb = types.InlineKeyboardMarkup()
+    bb.add(channel)
+    bot.reply_to(message, "«•» اهلا وسهلا بك \n«•» بوت ريست بريد انستا\n«•» جميل وياهو  وهوتميل\n«•» عزيزي المستخدم قم بارسال البريد الذي تريد ارسال الريست اليه",reply_markup=bb)
+
+
+
+
+@bot.message_handler(regexp='gmail.com|yahoo.com|hotmail.com')
+def verify_phone_number(message):
+    global alokt
+    current_time = time.time()
+    if current_time - alokt < 200:
+        remaining_time = round(200 - (current_time - alokt))
+        bot.reply_to(message, "حاول مجددا بعد {} ثانية".format(remaining_time))  
+    else:
+            reset = gdo_drow.reset(message.text)
+            bot.reply_to(message, 'تم ارسال الريست بنجاح \nالمطور نادر @N_2_N_1')
+            alokt = current_time
+
+print('بدا')
+bot.infinity_polling()
